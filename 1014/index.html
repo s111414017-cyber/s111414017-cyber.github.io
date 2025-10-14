@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的名片</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #e0e7ff 0%, #f3f4f6 100%);
+            font-family: 'Segoe UI', 'Noto Sans TC', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .card {
+            display: flex;
+            background: #fff;
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(60, 60, 90, 0.12);
+            overflow: hidden;
+            width: 480px;
+            max-width: 95vw;
+            min-height: 280px;
+        }
+        .card-left {
+            background: linear-gradient(135deg, #a0cea2 60%, #a0c7bb 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45%;
+            min-width: 180px;
+            padding: 24px;
+        }
+        .avatar-mask {
+            width: 120px;
+            height: 120px;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(60, 60, 90, 0.18);
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .avatar-mask img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .card-right {
+            flex: 1;
+            padding: 32px 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: #374151;
+        }
+        .name {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        .title {
+            font-size: 1.1rem;
+            color: #55a168;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+        .info {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #6b7280;
+        }
+        @media (max-width: 600px) {
+            .card {
+                flex-direction: column;
+                width: 98vw;
+                min-height: 0;
+            }
+            .card-left, .card-right {
+                width: 100%;
+                min-width: 0;
+                padding: 24px 12px;
+                justify-content: center;
+                align-items: center;
+            }
+            .card-right {
+                padding-top: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="card-left">
+            <div class="avatar-mask">
+                <img src="Screenshot_20251014_092359_Photos.jpg" alt="個人照片">
+            </div>
+        </div>
+        <div class="card-right">
+            <div class="name">李沛霓 Nydia</div>
+            <div class="title">學生</div>
+            <div class="info">
+                學號：111412345<br>
+                Email：s111412345@cyber.github.io<br>
+                電話: 0912345678<br>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
