@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>三區塊六邊形照片頁面</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+            height: 100vh;
+            width: 100vw;
+        }
+        .section {
+            flex: 1;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .photo-container {
+            width: 120px;
+            height: 120px;
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hex-photo {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            clip-path: polygon(
+                25% 6.7%, 75% 6.7%,
+                100% 50%, 75% 93.3%,
+                25% 93.3%, 0% 50%
+            );
+            border: 3px solid #ccc;
+            background: #fff;
+        }
+        .text-container {
+            flex: 1;
+            padding: 10px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        /* 區塊顏色區分 */
+        .section:nth-child(1) { background: #ffffff; }
+        .section:nth-child(2) { background: #ffffff; }
+        .section:nth-child(3) { background: #ffffff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="section">
+            <div class="photo-container">
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=facearea&w=400&h=400" alt="照片1" class="hex-photo">
+            </div>
+            <div class="text-container">
+                <h2>左區塊標題</h2>
+                <p>這是左區塊的文字內容，可以介紹照片或放置其他資訊。</p>
+            </div>
+        </div>
+        <div class="section">
+            <div class="photo-container">
+                <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=facearea&w=400&h=400" alt="照片2" class="hex-photo">
+            </div>
+            <div class="text-container">
+                <h2>中區塊標題</h2>
+                <p>這是中區塊的文字內容，可以介紹照片或放置其他資訊。</p>
+            </div>
+        </div>
+        <div class="section">
+            <div class="photo-container">
+                <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=facearea&w=400&h=400" alt="照片3" class="hex-photo">
+            </div>
+            <div class="text-container">
+                <h2>右區塊標題</h2>
+                <p>這是右區塊的文字內容，可以介紹照片或放置其他資訊。</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
