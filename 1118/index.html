@@ -1,7 +1,90 @@
 <!doctype html>
-<style></style>
-
+<style>
+/* 移除 navbar 中放圖片的佔位元素，並收掉其間距 */
+header .d-flex .bd-placeholder-img {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin-right: 0 !important;
+}
 </style>
+<script>
+window.addEventListener('load', function () {
+    try {
+        var groupSection = Array.from(document.querySelectorAll('section')).find(function (s) {
+            var h3 = s.querySelector('h3');
+            return h3 && /競賽主題與組別/.test(h3.textContent);
+        });
+        if (!groupSection) return;
+
+        // reconstruct the original ordered list with descriptions
+        var newOl = document.createElement('ol');
+
+        var items = [
+            {
+                title: 'Uptale VR 教學應用設計組：',
+                desc: '設計沉浸式教學場景，可包含與國小課程教材相關內容、各層面之教育議題、與真實情境有關之教學應用與學習規劃，展現虛擬實境於教學現場之應用潛能。'
+            },
+            {
+                title: 'AI 小工具教學創新應用組：',
+                desc: '發展 AI 工具（如 ChatGPT、生成式 AI、學習分析工具等）於教學現場的應用，解決學習難題或提升學習成效。'
+            },
+            {
+                title: 'Apple 教育應用設計組：',
+                desc: '可包含教案設計（結合 iPad、Mac 等 Apple 生態系工具的數位教學設計），或應用程式設計（自行開發或利用 Swift/Swift Playgrounds 等進行教育應用創作）。'
+            }
+        ];
+
+        items.forEach(function (it) {
+            var li = document.createElement('li');
+            var wrapper = document.createElement('div');
+
+            var strong = document.createElement('strong');
+            strong.textContent = it.title;
+            wrapper.appendChild(strong);
+
+            var p = document.createElement('p');
+            p.textContent = it.desc;
+            wrapper.appendChild(p);
+
+            li.appendChild(wrapper);
+            newOl.appendChild(li);
+        });
+
+        // replace either the existing ol or the generated container
+        var old = groupSection.querySelector('ol') || groupSection.querySelector('div.group-container') || groupSection.querySelector('div.group-container-inline');
+        if (old) {
+            old.parentNode.replaceChild(newOl, old);
+        } else {
+            // append if nothing to replace
+            groupSection.appendChild(newOl);
+        }
+    } catch (e) {
+        console && console.error && console.error('Restore groups failed', e);
+    }
+});
+</script>
+
+<style>
+.heading-star { color: #ffb400; margin-right: 6px; font-size: 1.05em; line-height: 1; }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('h2.h4, h3.h5').forEach(function (h) {
+        var txt = (h.textContent || '').trim();
+        var m = txt.match(/^[^、]+、\s*(.*)$/); // 預設為「一、標題」這種類型
+        if (m) {
+            h.textContent = ''; // 清除原有文字
+            var star = document.createElement('span');
+            star.className = 'heading-star';
+            star.textContent = '★';
+            h.appendChild(star);
+            h.appendChild(document.createTextNode(' ' + m[1]));
+        }
+    });
+});
+</script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
