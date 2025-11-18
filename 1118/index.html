@@ -1,207 +1,436 @@
-<!DOCTYPE html>
-<!-- saved from url=(0048)https://getbootstrap.com/docs/5.3/examples/blog/ -->
-<html lang="en" data-bs-theme="light">
+<!doctype html>
+<style></style>
+
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    
+    var svg = document.querySelector('a.d-flex .bd-placeholder-img');
+    if (!svg) return;
+    var img = document.createElement('img');
+   
+    img.src = 'images/ntue-seal.png';
+    img.alt = '國立臺北教育大學 校徽';
+    img.width = 40;
+    img.height = 32;
+    img.className = 'bd-placeholder-img me-2';
+   
+    svg.parentNode.replaceChild(img, svg);
+});
+</script>
+
+</script>
 
 <style>
-        body, h1, h2, h3, h4, h5, h6, p, ul, li, table, th, td, a, strong, .text-body-emphasis, .text-body-secondary, .text-success-emphasis {
-            color: #000 !important;
+/* 標題前半段：灰色線框 */
+.group-title-badge {
+    display:inline-block;
+    padding:4px 10px;
+    border:1px solid #ced4da;
+    border-radius:6px;
+    background:#fff;
+    color:#343a40;
+    font-weight:600;
+    line-height:1.2;
+}
+/* 每一組的外框改為透明背景，內含 badge 與描述（描述保留白底） */
+.group-box {
+    background:transparent;
+    border:0;
+    padding:6px 0;
+    margin-bottom:8px;
+}
+/* 描述文字跟原本一樣白底（預設），僅調整字重與顏色 */
+.group-desc { color:#343a40; font-weight:400; }
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // inject styles for badges and group boxes
+    var css = "\
+.heading-badge { display:inline-block; min-width:40px; height:28px; background:#e9ecef; color:#495057; text-align:center; line-height:28px; border-radius:4px; margin-right:8px; font-weight:600; font-size:0.95rem; }\
+.organizer-small { display:block; font-size:0.9rem; color:#6c757d; margin-top:6px; margin-bottom:12px; }\
+.group-box { background:#f1f3f5; border:1px solid #e9ecef; padding:12px; border-radius:6px; margin-bottom:10px; font-weight:600; color:#343a40; }\
+.group-container { padding-top:6px; }\
+";
+    var style = document.createElement('style');
+    style.type = 'text/css';
+    style.appendChild(document.createTextNode(css));
+    document.head.appendChild(style);
+
+    // replace numbering like "一、標題" with a gray badge
+    var headingSelector = 'h2.h4, h3.h5';
+    document.querySelectorAll(headingSelector).forEach(function (h) {
+        var txt = (h.textContent || '').trim();
+        var m = txt.match(/^([^、]+)、\s*(.*)$/); // match Chinese enumerator before '、'
+        if (m) {
+            var badge = document.createElement('span');
+            badge.className = 'heading-badge';
+            badge.textContent = m[1];
+            // preserve remaining title text
+            var rest = document.createTextNode(' ' + m[2]);
+            // clear and insert
+            h.innerHTML = '';
+            h.appendChild(badge);
+            h.appendChild(rest);
         }
-        a {
-            text-decoration: none !important;
+    });
+
+    // move 主辦單位 (organizer) under the main article title and remove the original section
+    var sections = Array.from(document.querySelectorAll('section'));
+    var organizerSection = sections.find(function (s) {
+        var h3 = s.querySelector('h3');
+        return h3 && /辦理單位|主辦單位/.test(h3.textContent);
+    });
+    if (organizerSection) {
+        var p = organizerSection.querySelector('p');
+        if (p) {
+            var mainTitle = document.querySelector('article h2.h4');
+            if (mainTitle) {
+                var small = document.createElement('div');
+                small.className = 'organizer-small';
+                small.textContent = p.textContent.trim();
+                mainTitle.parentNode.insertBefore(small, mainTitle.nextSibling);
+            }
         }
+        organizerSection.remove();
+    }
+
+    // In the "競賽主題與組別" section, wrap each group title in its own gray box and remove the detailed descriptions
+    var groupSection = sections.find(function (s) {
+        var h3 = s.querySelector('h3');
+        return h3 && /競賽主題與組別/.test(h3.textContent);
+    });
+    if (groupSection) {
+        var ol = groupSection.querySelector('ol');
+        if (ol) {
+            var lis = Array.from(ol.querySelectorAll('li'));
+            var container = document.createElement('div');
+            container.className = 'group-container';
+            lis.forEach(function (li) {
+                var strong = li.querySelector('strong');
+                var titleText = strong ? strong.textContent.trim() : li.textContent.trim();
+                // remove any leading numbering if present
+                titleText = titleText.replace(/^[^\u4e00-\u9fff0-9]*\s*/, '');
+                var box = document.createElement('div');
+                box.className = 'group-box';
+                box.textContent = titleText;
+                container.appendChild(box);
+            });
+            ol.parentNode.replaceChild(container, ol);
+        }
+    }
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // 更新標題
+    document.title = '國立臺北教育大學114「教學科技應用設計競賽」實施辦法';
+
+    // 移除內嵌 PDF 檢視元件
+    document.querySelectorAll('iframe.pdf-view').forEach(function (el) { el.remove(); });
+
+    // 移除「下載 PDF」連結或包含 forcedownload 的連結
+    document.querySelectorAll('a').forEach(function (a) {
+        var txt = (a.textContent || '').trim();
+        var href = a.href || '';
+        if (/下載\s*PDF/i.test(txt) || /forcedownload=1/.test(href) || /114%E6%95%99%E5%AD%B8/.test(href)) {
+            a.remove();
+        }
+    });
+});
+</script>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>114 教學科技應用設計競賽</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Minimal styles to mirror Bootstrap blog example */
+        .blog-header { border-bottom: 1px solid rgba(0,0,0,.1); }
+        .blog-title { font-weight: 300; }
+        .bd-placeholder-img { font-size: 1.125rem; text-anchor: middle; -webkit-user-select: none; -moz-user-select: none; user-select: none; }
+        @media (min-width: 768px) { .bd-placeholder-img-lg { font-size: 3.5rem; } }
+        main > .container { padding-top: 1.5rem; }
+        iframe.pdf-view { border: 1px solid #ddd; height: 500px; width: 100%; }
     </style>
+</head>
+<body class="bg-light">
 
-<body> <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
-        <symbol id="check2" viewBox="0 0 16 16">
-            <path
-                d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z">
-            </path>
-        </symbol>
-        <symbol id="circle-half" viewBox="0 0 16 16">
-            <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"></path>
-        </symbol>
-        <symbol id="moon-stars-fill" viewBox="0 0 16 16">
-            <path
-                d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z">
-            </path>
-            <path
-                d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z">
-            </path>
-        </symbol>
-        <symbol id="sun-fill" viewBox="0 0 16 16">
-            <path
-                d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z">
-            </path>
-        </symbol>
-    </svg>
-    
-    <main class="container">
-        <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
-            <div class="col-lg-6 px-0">
-                <h1 class="display-4 fst-italic">國立臺北教育大學
-114「教學科技應用設計競賽」實施辦法
-</h1>
-                <p class="lead my-3">主辦單位：國立臺北教育大學教學發展中心
-</p>
-                <p class="lead mb-0"><a href="https://getbootstrap.com/docs/5.3/examples/blog/#"
-                        class="text-body-emphasis fw-bold">Continue reading...</a></p>
-            </div>
-        </div>
-       <div class="container">
-    <div class="row mb-4 justify-content-center align-items-center text-center">
-        <!-- 左側區塊 -->
-        <div class="col-md-5 d-flex flex-column justify-content-center align-items-center">
-            <div class="border rounded shadow-sm w-100 p-4">
-                <strong class="d-inline-block mb-2 text-success-emphasis">日期說明</strong>
-                <h3 class="mb-0">報名日期</h3>
-                <div class="mb-1 text-body-secondary">自即日起至 114 年 11 月 7 日(五)截止。</div>
-                <p class="card-text mb-auto">競賽報名網址：https://forms.gle/Hs9SkDYpiAaB2J9p6</p>
-            </div>
-        </div>
-        <!-- 右側區塊 -->
-        <div class="col-md-5 d-flex flex-column justify-content-center align-items-center">
-            <div class="border rounded shadow-sm w-100 p-4">
-                <strong class="d-inline-block mb-2 text-success-emphasis">日期說明</strong>
-                <h3 class="mb-0">繳交日期</h3>
-                <div class="mb-1 text-body-secondary">自即日起至 114 年 12 月 14 日(日)截止。</div>
-                <p class="mb-auto">得獎名單公布預計於 115 年 1 月底於「教學發展中心」網頁公布得獎名單，並以 Email 或電話通知領獎。</p>
-            </div>
-        </div>
-    </div>
-</div>
-    </div>
-</div>
-        </div>
-        <div class="row g-5">
-            <div class="col-md-8">
-                <h3 class="pb-4 mb-4 fst-italic border-bottom">
-                    競賽流程與說明
-                </h3>
-                <article class="blog-post">
-                    <h2 class="display-5 link-body-emphasis mb-1">競賽辦法</h2>
-                    <p>參加對象：本校在學學生（含學士班、碩士班、碩士在職專班）。</p>
-                    <hr>
-                    <p>每團隊成員人數 1 至 4 人，並可邀請老師 1 名擔任團隊指導老師。</p>
-                    <hr>
-                    <p>每位學生最多可報名 2 件作品，但同一作品不得重複投件於不同類別。</p>
+<header class="blog-header py-3">
+    <div class="container d-flex flex-column flex-md-row align-items-center">
+        <a class="d-flex align-items-center text-dark text-decoration-none" href="#">
+            <svg class="bd-placeholder-img me-2" width="40" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bootstrap">
+                <rect width="100%" height="100%" fill="#6c757d"></rect>
+            </svg>
+            <span class="fs-4 blog-title">教學發展中心 / 競賽公告</span>
+        </a>
 
-                    <h2>競賽主題與組別</h2>
-                    <p>依競賽主題類型分為以下三類別</p>
+        <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+            <a class="me-3 py-2 text-dark text-decoration-none" href="#">主頁</a>
+            <a class="me-3 py-2 text-dark text-decoration-none" href="#">活動</a>
+            <a class="py-2 text-dark text-decoration-none" href="#">聯絡我們</a>
+        </nav>
+    </div>
+</header>
+
+<main class="container">
+    <div class="row g-5">
+        <!-- Main content -->
+        <div class="col-md-8">
+            <article class="p-4 mb-4 bg-white rounded-3">
+                <h2 class="h4 mb-3">114「教學科技應用設計競賽」實施辦法</h2>
+
+                
+                <section class="mb-3">
+                    <h3 class="h5">一、活動主旨</h3>
+                    <p>為鼓勵學生將數位科技應用於教學現場，強化教材設計與創作能力，特舉辦本競賽，期望學生能靈活運用 VR、AI 技術及 Apple 教育工具，並結合數位媒體、互動設計及多元評量方式，設計具創新性與實用性的教學應用，進而增強學生於各領域之數位內容科技創建能力。</p>
+                </section>
+
+                <section class="mb-3">
+                    <h3 class="h5">二、辦理單位</h3>
+                    <p>主辦單位：國立臺北教育大學教學發展中心</p>
+                </section>
+
+                <section class="mb-3">
+                    <h3 class="h5">三、競賽辦法</h3>
                     <ul>
-                        <li>Uptale VR 教學應用設計組：
-設計沉浸式教學場景，可包含與國小課程教材相關內容、各層面之教育
-議題、與真實情境有關之教學應用與學習規劃，展現虛擬實境於教學現
-場之應用潛能。</li>
-                        <li>AI 小工具教學創新應用組：
-發展 AI 工具（如 ChatGPT、生成式 AI、學習分析工具等）於教學現場
-的應用，解決學習難題或提升學習成效。
-</li>
-                        <li>Apple 教育應用設計組：
-可包含教案設計（結合 iPad、Mac 等 Apple 生態系工具的數位教學設
-計），或應用程式設計（自行開發或利用 Swift/Swift Playgrounds 等
-進行教育應用創作）。</li>
+                        <li>（一）參加對象：本校在學學生（含學士班、碩士班、碩士在職專班）。</li>
+                        <li>（二）每團隊成員人數 1 至 4 人，並可邀請老師 1 名擔任團隊指導老師。</li>
+                        <li>（三）每位學生最多可報名 2 件作品，但同一作品不得重複投件於不同類別。</li>
                     </ul>
-                    
-                    <h3>競賽流程</h3>
-                    <p>競賽報名：
-本競賽採網路線上報名，請填妥報名資料表並上傳完成報名。
-※報名 Uptale VR 教學應用設計組，將於完成競賽報名後以組別為單位
-開通競賽用 Uptale VR 帳號，並以 Email 通知。
-</p>
-<p>繳件資料
-</p>
-                    <ul>
-                        <li>計畫書：格式為 PDF 檔，內容須包含(1)競賽組別、作品名稱、團隊
-介紹(2)創作理念 (3)教學目標(4)教學內容規劃(5)預期成效。</li>
-                        <li>成品：如 Uptale VR 成品、AI 工具應用 Demo、Apple 教案或應用程
-式原型。</li>
-                        <li>作品導覽影片：格式為 mp4 檔，時間長度限制 10 分鐘內，解析度
-HD1080P（1920X1080），影片請上傳至 Youtube，並提供影片連結。
-</li>
-<li>個人資料保護聲明暨數位內容授權書。
-</li>
-                    </ul>
-                  
-                    <h3>繳交方式：</h3>
-                    <p>請將檔案依規定備妥後，繳交上傳至：
-https://forms.gle/PQ1AEJ1xBo3yRTZd6</p>
-                   
-                    <p>檔案命名方式：編號_團隊名_作品名_檔名（依照內容命名），請將
-前揭檔案壓縮為 zip 檔再上傳。
-</p>
-                </article>
-            
-                    <h3>評分標準</h3>
-                    
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>完整性</th>
-                                <th>創意表現及互動應用</th>
-                                <th>實踐效益及未來延展性</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>40%</td>
-                                <td>30%</td>
-                                <td>30%</td>
-                            </tr>
-                            
-                    </table>
-                    
-                </article>
-                <article class="blog-post">
-                    <h2 class="display-5 link-body-emphasis mb-1">獎勵辦法與注意事項</h2>
-                    
+                </section>
+                <style>
+                .group-container-inline { padding-top:6px; }
+                .group-item { margin-bottom:12px; }
+                .group-title-badge {
+                    display:block;
+                    background:#fff;
+                    border:1px solid #ced4da;
+                    border-radius:6px;
+                    padding:10px 12px;
+                    font-weight:700;
+                    color:#212529;
+                    line-height:1.3;
+                }
+                .group-desc {
+                    margin-top:8px;
+                    color:#212529;
+                    font-weight:400;
+                    padding-left:2px;
+                }
+                </style>
+
+                <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    var groupSection = Array.from(document.querySelectorAll('section')).find(function (s) {
+                        var h3 = s.querySelector('h3');
+                        return h3 && /競賽主題與組別/.test(h3.textContent);
+                    });
+                    if (!groupSection) return;
+                    var ol = groupSection.querySelector('ol');
+                    if (!ol) return;
+
+                    var container = document.createElement('div');
+                    container.className = 'group-container-inline';
+
+                    Array.from(ol.children).forEach(function (li) {
+                        var tmp = li.cloneNode(true);
+                        var strong = tmp.querySelector('strong');
+                        var titleText = '';
+                        if (strong) {
+                            titleText = strong.textContent.replace(/[:：\s]+$/, '').trim();
+                            strong.remove();
+                        } else {
+                            // fallback: take text before first colon-like punctuation
+                            var full = tmp.textContent.trim();
+                            var parts = full.split(/[:：\-–—]/);
+                            titleText = parts.shift().trim();
+                            // remove title portion from tmp
+                            tmp.textContent = full.replace(titleText, '').replace(/^[\s:：\-–—]+/, '').trim();
+                        }
+
+                        var item = document.createElement('div');
+                        item.className = 'group-item';
+
+                        var titleDiv = document.createElement('div');
+                        titleDiv.className = 'group-title-badge';
+                        titleDiv.textContent = titleText;
+                        item.appendChild(titleDiv);
+
+                        var descHtml = tmp.innerHTML.trim();
+                        // if descHtml still contains leading punctuation, clean it
+                        descHtml = descHtml.replace(/^[\s:：\-–—]+/, '');
+                        if (descHtml) {
+                            var descDiv = document.createElement('div');
+                            descDiv.className = 'group-desc';
+                            descDiv.innerHTML = descHtml;
+                            item.appendChild(descDiv);
+                        }
+
+                        container.appendChild(item);
+                    });
+
+                    ol.parentNode.replaceChild(container, ol);
+                });
+                </script>
+                <section class="mb-3">
+                    <style>
+.group-item .description,
+.group-content p,
+.group-item p {
+    background-color: transparent !important;
+}
+</style>
+                    <h3 class="h5">四、競賽主題與組別</h3>
+                    <ol>
+                        <li>
+                            <div>
+                                <strong>Uptale VR 教學應用設計組：</strong>
+                                <p>
+                                    設計沉浸式教學場景，可包含與國小課程教材相關內容、各層面之教育議題、與真實情境有關之教學應用與學習規劃，展現虛擬實境於教學現場之應用潛能。
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <div >
+                                <strong>AI 小工具教學創新應用組：</strong>
+                                <p></p>
+                                    發展 AI 工具（如 ChatGPT、生成式 AI、學習分析工具等）於教學現場的應用，解決學習難題或提升學習成效。</p>>
+
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <strong>Apple 教育應用設計組：</strong>
+                                <p>
+                                    可包含教案設計（結合 iPad、Mac 等 Apple 生態系工具的數位教學設計），或應用程式設計（自行開發或利用 Swift/Swift Playgrounds 等進行教育應用創作）。
+                                </p>
+                            </div>
+                        </li>
+                       
+                    </ol>
+                </section>
+
+                <section class="mb-3">
+                    <h3 class="h5">五、報名方式及日程</h3>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="p-3 border rounded h-100">
+                                <h4 class="h6">報名方式</h4>
+                                <p class="mb-1">（一）競賽報名：自即日起至 114 年 11 月 7 日(五)截止。</p>
+                                <p class="mb-2">競賽報名網址：<a href="https://forms.gle/Hs9SkDYpiAaB2J9p6" target="_blank" rel="noopener">https://forms.gle/Hs9SkDYpiAaB2J9p6</a></p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 border rounded h-100">
+                                <h4 class="h6">日程</h4>
+                                <p class="mb-1">（二）繳件時間：自即日起至 114 年 12 月 14 日(日)截止。</p>
+                                <p class="mb-2">（三）得獎名單公布：預計於 115 年 1 月底於「教學發展中心」網頁公布得獎名單，並以 Email 或電話通知領獎。</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="mb-3">
+                    <h3 class="h5">六、競賽流程</h3>
+                    <ol>
+                        <li><strong>競賽報名：</strong>本競賽採網路線上報名，請填妥報名資料表並上傳完成報名。※報名 Uptale VR 教學應用設計組，將於完成競賽報名後以組別為單位開通競賽用 Uptale VR 帳號，並以 Email 通知。</li>
+                        <li><strong>繳件資料：</strong>
+                            <ol>
+                                <li>計畫書：格式為 PDF 檔，內容須包含 (1)競賽組別、作品名稱、團隊介紹 (2)創作理念 (3)教學目標 (4)教學內容規劃 (5)預期成效。</li>
+                                <li>成品：如 Uptale VR 成品、AI 工具應用 Demo、Apple 教案或應用程式原型。</li>
+                                <li>作品導覽影片：格式為 mp4 檔，時間長度限制 10 分鐘內，解析度 HD1080P（1920X1080），影片請上傳至 Youtube，並提供影片連結。</li>
+                                <li>個人資料保護聲明暨數位內容授權書。</li>
+                            </ol>
+                        </li>
+                        <li><strong>繳交方式：</strong>
+                            <ol>
+                                <li>請將檔案依規定備妥後，繳交上傳至：<a href="https://forms.gle/PQ1AEJ1xBo3yRTZd6" target="_blank" rel="noopener">https://forms.gle/PQ1AEJ1xBo3yRTZd6</a></li>
+                                <li>檔案命名方式：編號_團隊名_作品名_檔名（依照內容命名），請將前揭檔案壓縮為 zip 檔再上傳。</li>
+                            </ol>
+                        </li>
+                    </ol>
+                </section>
+
+                <section class="mb-3">
+                    <h3 class="h5">七、評審標準</h3>
+                    <div class="table-responsive mb-2">
+                        <table class="table table-bordered">
+                            <thead class="table-light">
+                                <tr><th scope="col">評分項目</th><th scope="col">占比</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>完整性</td><td>40%</td></tr>
+                                <tr><td>創意表現及互動應用</td><td>30%</td></tr>
+                                <tr><td>實踐效益及未來延展性</td><td>30%</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="mb-3"></section>
+                    <h3 class="h5">八、獎勵辦法</h3>
                     <p>各類別分別設置：</p>
                     <ul>
                         <li>特優（1 件）：獎金新台幣 8,000 元，每人獎狀 1 張。</li>
                         <li>優選（1 件）：獎金新台幣 5,000 元，每人獎狀 1 張。</li>
                         <li>佳作（2 件）：獎金新台幣 2,000 元，每人獎狀 1 張。</li>
                     </ul>
-                    <p>註：主辦方得視參賽件數或作品水準，由評審委員決議並調整獲獎情形，名次
-件數得調整或從缺。</p>
+                    <p class="small text-muted">註：主辦方得視參賽件數或作品水準，由評審委員決議並調整獲獎情形，名次件數得調整或從缺。</p>
+                </section>
 
-<p>注意事項：</p>
-                    <ul>
-                        <li>參賽作品需為參賽者/參賽隊伍自行開發、編制之創作，如有涉及智慧
-財產權侵害之情事者，經主辦單位確認後，相關法律責任由參賽者/參
-賽隊伍自行負責，並取消其參賽資格，如有得獎將追回獎項及獎金。
-</li>
-                        <li>本競賽屬非營利且具有教育性質，若使用非原創素材時，須註明使用之
-素材來源，包括圖片（註明圖像光碟出版者、圖庫版權商、攝影者、出
-版商等）、音樂（註明音樂詞、曲作者、編曲者、演唱人、歌名及唱片
-發行公司）等相關資料。</li>
-                        <li>各參賽作品之著作人格權，歸屬參賽隊伍個別擁有，但主辦單位擁有為
-推廣活動及教育目的之重製、修改、下載及公開展示等著作財產權權利。</li>
-<li>後續視成果發表與推廣需求，主辦單位得邀請獲獎隊伍參加相關課程與
-活動。</li>
-                    </ul>
-            </div>
-            <div class="col-md-4">
-                <div class="position-sticky" style="top: 2rem;">
-                    <div class="p-4 mb-3 bg-body-tertiary rounded">
-                        <h4 class="fst-italic">主旨</h4>
-                        <p class="mb-0">為鼓勵學生將數位科技應用於教學現場，強化教材設計與創作能力，特舉辦
-本競賽，期望學生能靈活運用 VR、AI 技術及 Apple 教育工具，並結合數位
-媒體、互動設計及多元評量方式，設計具創新性與實用性的教學應用，進而
-增強學生於各領域之數位內容科技創建能力。
-</p>
-                    </div>
+                <section class="mb-0">
+                    <h3 class="h5">九、注意事項</h3>
+                    <ol>
+                        <li>參賽作品需為參賽者/參賽隊伍自行開發、編制之創作，如有涉及智慧財產權侵害之情事者，經主辦單位確認後，相關法律責任由參賽者/參賽隊伍自行負責，並取消其參賽資格，如有得獎將追回獎項及獎金。</li>
+                        <li>本競賽屬非營利且具有教育性質，若使用非原創素材時，須註明使用之素材來源，包括圖片（註明圖像光碟出版者、圖庫版權商、攝影者、出版商等）、音樂（註明音樂詞、曲作者、編曲者、演唱人、歌名及唱片發行公司）等相關資料。</li>
+                        <li>各參賽作品之著作人格權，歸屬參賽隊伍個別擁有，但主辦單位擁有為推廣活動及教育目的之重製、修改、下載及公開展示等著作財產權權利。</li>
+                        <li>後續視成果發表與推廣需求，主辦單位得邀請獲獎隊伍參加相關課程與活動。</li>
+                    </ol>
+                </section>
+            </article>
+        </div>
 
-                   
+        <!-- Sidebar -->
+        <aside class="col-md-4">
+            <div class="position-sticky" style="top: 2rem;">
+                <div class="p-3 mb-3 bg-white rounded">
+                    <h4 class="h6">關於</h4>
+                    <p class="mb-0">國立臺北教育大學 教學發展中心 公告頁面 — 競賽資訊與參賽須知。</p>
+                </div>
+
+                <div class="p-3 mb-3 bg-white rounded">
+                    <h4 class="h6">搜尋</h4>
+                    <form>
+                        <div class="input-group">
+                            <input class="form-control" placeholder="搜尋公告" aria-label="搜尋公告">
+                            <button class="btn btn-outline-secondary" type="submit">搜尋</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="p-3 mb-3 bg-white rounded">
+                    <h4 class="h6">快速連結</h4>
+                    <ol class="list-unstyled">
+                        <li><a href="https://forms.gle/Hs9SkDYpiAaB2J9p6" target="_blank" rel="noopener">報名表單</a></li>
+                        <li><a href="https://forms.gle/PQ1AEJ1xBo3yRTZd6" target="_blank" rel="noopener">繳件上傳</a></li>
+                        <li><a href="#" target="_blank" rel="noopener">教學發展中心</a></li>
+                    </ol>
                 </div>
             </div>
-        </div>
-    </main>
-    <footer class="py-5 text-center text-body-secondary bg-body-tertiary">
-        <p>、本案經費來源由教育部高教深耕計畫經費項下支應。</p>
-        
-    </footer>
-    <script src="./Blog Template · Bootstrap v5.3_files/bootstrap.bundle.min.js.下載"
-        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-        class="astro-vvvwv3sm"></script>
-</body>
+        </aside>
+    </div>
+</main>
 
+<footer class="blog-footer py-3 mt-5">
+    <div class="container text-center">
+        <p class="mb-1">© 國立臺北教育大學 教學發展中心</p>
+        <p class="mb-0"><a href="#">回到頂部</a></p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
