@@ -5,19 +5,6 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>網頁設計課成果</title>
     <style>
-        .navbar-title {
-            margin-right: auto;
-        }
-    </style>
-    <style>
-        .navbar-container {
-            justify-content: space-between;
-        }
-        .navbar-shortcuts {
-            margin-left: auto;
-        }
-    </style>
-    <style>
         body {
             margin: 0;
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -31,25 +18,23 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.03);
         }
         .navbar-container {
-            max-width: 900px;
-            margin: 0 auto;
             display: flex;
             flex-direction: row;
-            justify-content: space-between;
             align-items: center;
-            gap: 12px;
-            padding: 0 16px;
         }
         .navbar-title {
             font-size: 1.5rem;
             font-weight: bold;
             letter-spacing: 2px;
             color: #444;
+            padding: 0 16px;
         }
         .navbar-shortcuts {
             display: flex;
             gap: 24px;
-            margin-top: 0;
+            margin: 0;
+            margin-left: auto;
+            padding: 0 16px;
         }
         .navbar-shortcuts a {
             text-decoration: none;
@@ -67,7 +52,6 @@
             .navbar-container {
                 flex-direction: column;
                 align-items: flex-start;
-                padding: 0 16px;
             }
             .navbar-title {
                 font-size: 1.1rem;
@@ -75,6 +59,7 @@
             .navbar-shortcuts {
                 gap: 12px;
                 margin-top: 8px;
+                margin-left: 0;
             }
         }
     </style>
@@ -92,4 +77,4 @@
         </div>
     </nav>
 </body>
-</html> 
+</html>
