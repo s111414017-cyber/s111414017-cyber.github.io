@@ -61,6 +61,11 @@
             gap: 28px;
             align-items: center;
         }
+        .about-extra { flex: 0 0 220px; display:flex; align-items:center; justify-content:center; }
+        .about-extra-img { width:220px; height:auto; border-radius:12px; box-shadow: none; }
+        /* 若圖片載入失敗，隱藏 <img> 並在父容器顯示提示文字 */
+        .about-extra.no-img { background:#f7f7f7; border-radius:12px; padding:8px; }
+        .about-extra.no-img::after { content: "圖片未找到 — 請將檔案放到 images/rilakkuma.png"; color:var(--muted); font-size:0.95rem; text-align:center; }
         .about-left { flex: 0 0 180px; }
         .avatar {
             width: 180px; height: 180px; border-radius: 50%;
@@ -84,8 +89,10 @@
         /* 區塊二後方的背景圖（淺灰圓點） */
         .after-bg {
             max-width: var(--max-w);
-            margin: 18px auto 60px;
-            height: 160px;
+            /* 減小上下 margin 以縮短與作品集的距離 */
+            margin: 10px auto 24px;
+            /* 減小高度讓視覺間距更緊湊 */
+            height: 80px;
             background-image: url("images/dots.png");
             background-repeat: repeat;
             background-position: center;
@@ -100,6 +107,8 @@
             .about-left { flex:0 0 140px; }
             .avatar { width:140px; height:140px; }
             .after-bg { height: 120px; }
+            /* 隱藏右側插圖於中小螢幕以節省空間 */
+            .about-extra { display:none; }
         }
         @media (max-width: 480px) {
             .banner { padding:20px 12px; }
@@ -109,6 +118,53 @@
             .avatar { width:120px; height:120px; }
             .about-left { flex:0 0 120px; }
             .after-bg { height: 80px; opacity: 0.10; }
+        }
+        /* 作品集樣式 */
+        #portfolio {
+            max-width: var(--max-w);
+            /* 減少上下空白，使作品集與資源更接近 */
+            margin: 8px auto 12px;
+            padding: 24px;
+            background: var(--card);
+            border-radius: 10px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.03);
+        }
+        #portfolio h3 { margin:0 0 12px 0; font-size:1.2rem; }
+        .proj-grid { display:flex; gap:12px; flex-wrap:wrap; }
+        .proj { flex:1 1 180px; min-width:140px; box-sizing:border-box; height:140px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:14px; border-radius:8px; text-decoration:none; color:var(--text); background:#fafafa; border:1px solid #eee; transition:all .15s ease; }
+        .proj:hover { transform:translateY(-6px); box-shadow:0 10px 24px rgba(0,0,0,0.06); }
+        .proj strong { display:block; margin-bottom:6px; }
+
+        /* 更小螢幕時減少按鈕高度 */
+        @media (max-width: 480px) {
+            .proj { height:110px; }
+        }
+        /* 學習資源區塊樣式 */
+        #resources {
+            max-width: var(--max-w);
+            /* 讓資源區緊貼在作品集下方 */
+            margin: 8px auto 40px;
+            padding: 18px;
+            background: var(--card);
+            border-radius: 10px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.03);
+        }
+        #resources h3 { margin:0 0 12px 0; font-size:1.2rem; }
+        .res-list { display:flex; flex-direction:column; gap:10px; }
+        .resource {
+            display:flex; gap:12px; align-items:center;
+            padding:12px; border-radius:8px; text-decoration:none; color:var(--text);
+            background:#fafafa; border:1px solid #eee;
+        }
+        .resource:hover { background:#f5f5f5; }
+        .res-thumb { width:56px; height:56px; border-radius:50%; overflow:hidden; flex:0 0 56px; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; }
+        .res-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+        .res-thumb.no-img { background:#bdbdbd; }
+        .res-content strong { display:block; margin-bottom:4px; }
+        .res-content p { margin:0; color:var(--muted); font-size:0.95rem; }
+        @media (max-width:600px) {
+            .resource { padding:10px; }
+            .res-thumb { width:48px; height:48px; flex:0 0 48px; }
         }
     </style>
 </head>
@@ -146,11 +202,165 @@
                         <a href="mailto:example@example.com" title="Email">✉️</a>
                     </div>
                 </div>
+                <!-- 右側附圖（將附件存為 images/rilakkuma.png） -->
+                <div class="about-extra" aria-hidden="true">
+                    <img class="about-extra-img" src="images/rilakkuma-web-5-1.jpg" alt="插圖" onerror="(function(img){img.style.display='none'; img.parentNode.classList.add('no-img');})(this)">
+                </div>
+            </div>
+        </section>
+        </section>
+
+        <!-- 區塊四：學習資源列表 -->
+        <section id="resources" aria-labelledby="resources-title">
+            <h3 id="resources-title">學習資源列表</h3>
+            <div class="res-list">
+                <a class="resource" href="https://github.com" target="_blank" rel="noopener">
+                    <div class="res-thumb" style="background:#24292e;">
+                        <img src="images/github.png" alt="Github" onerror="this.style.display='none'; this.parentNode.classList.add('no-img')">
+                    </div>
+                    <div class="res-content">
+                        <strong>Github</strong>
+                        <p>託管程式碼與版本控制，協作與 Pull Request 管理。</p>
+                    </div>
+                </a>
+
+                <a class="resource" href="https://desktop.github.com" target="_blank" rel="noopener">
+                    <div class="res-thumb" style="background:#0366d6;">
+                        <img src="images/github-desktop.png" alt="Github Desktop" onerror="this.style.display='none'; this.parentNode.classList.add('no-img')">
+                    </div>
+                    <div class="res-content">
+                        <strong>Github Desktop</strong>
+                        <p>圖形化介面管理 Git 操作，簡化同步與提交流程。</p>
+                    </div>
+                </a>
+
+                <a class="resource" href="https://www.w3schools.com" target="_blank" rel="noopener">
+                    <div class="res-thumb" style="background:#1e90ff;">
+                        <img src="images/w3schools.png" alt="W3Schools" onerror="this.style.display='none'; this.parentNode.classList.add('no-img')">
+                    </div>
+                    <div class="res-content">
+                        <strong>W3Schools</strong>
+                        <p>網頁技術教學與範例（HTML/CSS/JS），適合初學者快速上手。</p>
+                    </div>
+                </a>
+
+                <a class="resource" href="https://developer.mozilla.org/zh-TW/docs/Web/CSS" target="_blank" rel="noopener">
+                    <div class="res-thumb" style="background:#4caf50;">
+                        <img src="images/css.png" alt="CSS" onerror="this.style.display='none'; this.parentNode.classList.add('no-img')">
+                    </div>
+                    <div class="res-content">
+                        <strong>CSS</strong>
+                        <p>樣式語言，用於控制網頁排版與視覺呈現。</p>
+                    </div>
+                </a>
+
+                <a class="resource" href="https://getbootstrap.com" target="_blank" rel="noopener">
+                    <div class="res-thumb" style="background:#7952b3;">
+                        <img src="images/bootstrap.png" alt="Bootstrap" onerror="this.style.display='none'; this.parentNode.classList.add('no-img')">
+                    </div>
+                    <div class="res-content">
+                        <strong>Bootstrap</strong>
+                        <p>快速建立響應式 UI 的 CSS 框架與元件。</p>
+                    </div>
+                </a>
+
+                <a class="resource" href="https://code.visualstudio.com" target="_blank" rel="noopener">
+                    <div class="res-thumb" style="background:#0078d7;">
+                        <img src="images/vscode.png" alt="VSCode" onerror="this.style.display='none'; this.parentNode.classList.add('no-img')">
+                    </div>
+                    <div class="res-content">
+                        <strong>VSCode</strong>
+                        <p>輕量開發編輯器，支援擴充、除錯與多語言開發。</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <!-- 區塊二後方的淺灰圓點背景 -->
+        <div class="after-bg" aria-hidden="true"></div>
+
+        <!-- 作品集：快捷鍵 Alt+1..Alt+5 -->
+        <section id="portfolio" aria-labelledby="portfolio-title">
+            <h3 id="portfolio-title">作品集（快捷鍵：Alt+1 至 Alt+5）</h3>
+            <div class="proj-grid" role="list">
+                <a class="proj" role="listitem" href="0930/index.html" data-key="1" title="Alt+1 — 網頁製作練習_唐詩三百首">
+                    <strong>網頁製作練習_唐詩三百首</strong>
+                </a>
+                <a class="proj" role="listitem" href="1014/index.html" data-key="2" title="Alt+2 — 名片製作">
+                    <strong>名片製作</strong>
+                    
+                </a>
+                <a class="proj" role="listitem" href="1021/index.html" data-key="3" title="Alt+3 — 網頁製作練習_專輯宣傳">
+                    <strong>網頁製作練習_專輯宣傳</strong>
+                    
+                </a>
+                <a class="proj" role="listitem" href="1118/index.html" data-key="4" title="Alt+4 — 網頁製作練習_競賽資訊">
+                    <strong>網頁製作練習_競賽資訊</strong>
+                    
+                </a>
+                <a class="proj" role="listitem" href="indexold.html" data-key="5" title="Alt+5 — 網頁製作練習_樂團介紹">
+                    <strong>網頁製作練習_樂團介紹</strong>
+                    
+                </a>
             </div>
         </section>
 
-        <!-- 區塊二後方的淺灰圓點背景 -->
-        <div class="after-bg" aria-hidden="true"></div>
     </main>
+
+    <script>
+        (function(){
+            const projects = [
+                { key: '1', url: '0930/index.html' },
+                { key: '2', url: '1014/index.html' },
+                { key: '3', url: '1021/index.html' },
+                { key: '4', url: '1118/index.html' },
+                { key: '5', url: 'indexold.html' }
+            ];
+
+            const resources = [
+                { keys: ['6','g'], url: 'https://github.com' },
+                { keys: ['7','d'], url: 'https://desktop.github.com' },
+                { keys: ['8','w'], url: 'https://www.w3schools.com' },
+                { keys: ['9','c'], url: 'https://developer.mozilla.org/zh-TW/docs/Web/CSS' },
+                { keys: ['0','b'], url: 'https://getbootstrap.com' },
+                { keys: ['-','v'], url: 'https://code.visualstudio.com' }
+            ];
+
+            // 點擊已由 <a> 處理，但也保留程式綁定，以防未使用 href
+            projects.forEach(p => {
+                const el = document.querySelector(`[data-key="${p.key}"]`);
+                if(el) el.addEventListener('click', (e) => {
+                    // 讓原本的 <a> 行為保持；這行可處理 button-like 元素
+                    // 當元素無 href 時，使用 JS 導向
+                    if(!el.getAttribute('href')) {
+                        window.location.href = p.url;
+                    }
+                });
+            });
+
+            // 快捷鍵監聽：Alt + 1..5（作品）與 Alt + 6..0/- 或 Alt + 字母（資源）
+            document.addEventListener('keydown', function(e){
+                if(!e.altKey) return;
+                // 避免在輸入欄中觸發
+                const active = document.activeElement;
+                if(active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.isContentEditable)) return;
+                const key = String(e.key).toLowerCase();
+
+                // 作品導航（數字）
+                const proj = projects.find(p => p.key === key);
+                if(proj) {
+                    window.location.href = proj.url;
+                    return;
+                }
+
+                // 資源導航（數字或字母）
+                for(const r of resources) {
+                    if(r.keys.map(k=>k.toLowerCase()).includes(key)) {
+                        window.open(r.url, '_blank', 'noopener');
+                        return;
+                    }
+                }
+            });
+        })();
+    </script>
 </body>
 </html>
