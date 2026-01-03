@@ -16,7 +16,12 @@
         body {
             margin: 0;
             font-family: 'Segoe UI', Arial, sans-serif;
-            background: var(--bg);
+            background-color: var(--bg);
+            background-image: url("images/ae7d1b267f619e8dd019e1485ef50ad2.jpg");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            background-size: cover;
             color: var(--text);
         }
 
@@ -26,6 +31,11 @@
             border-bottom: 1px solid #e6e6e6;
             padding: 36px 16px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
         }
         .banner .container {
             max-width: var(--max-w);
@@ -45,12 +55,13 @@
         /* 區塊二 (自介) */
         #about {
             position: relative;
-            max-width: var(--max-w);
-            margin: 0 auto; /* 改為 0，讓區塊緊貼 banner 下方 */
-            padding: 32px;
-            background: var(--card);
+            max-width: 760px;
+            margin: 20px auto 36px;
+            padding: 22px 14px;
+            background: rgba(255,255,255,0.94);
             border-radius: 10px;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.03);
+            border: 1px solid #eee;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
             overflow: visible;
         }
 
@@ -119,36 +130,44 @@
             .about-left { flex:0 0 120px; }
             .after-bg { height: 80px; opacity: 0.10; }
         }
+        /* 當 banner 為 fixed 時，為主內容增加頂部間距以避免被遮蓋 */
+        main { margin-top: 92px; }
+        /* 讓內部錨點捲動時不會被固定的 banner 遮住 */
+        section { scroll-margin-top: 92px; }
         /* 作品集樣式 */
         #portfolio {
-            max-width: var(--max-w);
-            /* 減少上下空白，使作品集與資源更接近 */
-            margin: 8px auto 12px;
-            padding: 24px;
-            background: var(--card);
+            max-width: 760px;
+            margin: 28px auto 40px;
+            padding: 18px 14px;
+            background: rgba(255,255,255,0.94);
             border-radius: 10px;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.03);
+            border: 1px solid #eee;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
         }
         #portfolio h3 { margin:0 0 12px 0; font-size:1.2rem; }
-        .proj-grid { display:flex; gap:12px; flex-wrap:wrap; }
-        .proj { flex:1 1 180px; min-width:140px; box-sizing:border-box; height:140px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:14px; border-radius:8px; text-decoration:none; color:var(--text); background:#fafafa; border:1px solid #eee; transition:all .15s ease; }
-        .proj:hover { transform:translateY(-6px); box-shadow:0 10px 24px rgba(0,0,0,0.06); }
-        .proj strong { display:block; margin-bottom:6px; }
+        .proj-grid { display:block; }
+        .proj { display:flex; align-items:center; justify-content:space-between; width:100%; box-sizing:border-box; padding:12px 16px; margin-bottom:10px; border-radius:8px; text-decoration:none; color:var(--text); background:#fafafa; border:1px solid #eee; transition:all .12s ease; }
+        .proj:hover { transform:translateY(-3px); box-shadow:0 8px 20px rgba(0,0,0,0.06); background:#f5f5f5; }
+        .proj strong { display:block; margin:0; font-size:1rem; }
 
-        /* 更小螢幕時減少按鈕高度 */
+        /* 小螢幕時減少內距 */
         @media (max-width: 480px) {
-            .proj { height:110px; }
+            .proj { padding:10px 12px; }
         }
         /* 學習資源區塊樣式 */
         #resources {
-            max-width: var(--max-w);
-            /* 讓資源區緊貼在作品集下方 */
-            margin: 8px auto 40px;
-            padding: 18px;
-            background: var(--card);
+            max-width: 760px;
+            margin: 28px auto 48px;
+            padding: 16px 14px;
+            background: rgba(255,255,255,0.94);
             border-radius: 10px;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.03);
+            border: 1px solid #eee;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
         }
+
+        /* Prevent sections/cards from visually scaling on hover */
+        #about, #portfolio, #resources, .proj, .resource { transform-origin: center center; }
+        .proj:hover { transform: translateY(-6px); }
         #resources h3 { margin:0 0 12px 0; font-size:1.2rem; }
         .res-list { display:flex; flex-direction:column; gap:10px; }
         .resource {
@@ -208,6 +227,30 @@
                 </div>
             </div>
         </section>
+        </section>
+
+        
+
+        <!-- 作品集：快捷鍵 Alt+1..Alt+5 -->
+        <section id="portfolio" aria-labelledby="portfolio-title">
+            <h3 id="portfolio-title">作品集（快捷鍵：Alt+1 至 Alt+5）</h3>
+            <div class="proj-grid" role="list">
+                <a class="proj" role="listitem" href="0930/index.html" data-key="1" title="Alt+1 — 網頁製作練習_唐詩三百首">
+                    <strong>網頁製作練習_唐詩三百首</strong>
+                </a>
+                <a class="proj" role="listitem" href="1014/index.html" data-key="2" title="Alt+2 — 名片製作">
+                    <strong>名片製作</strong>
+                </a>
+                <a class="proj" role="listitem" href="1021/index.html" data-key="3" title="Alt+3 — 網頁製作練習_專輯宣傳">
+                    <strong>網頁製作練習_專輯宣傳</strong>
+                </a>
+                <a class="proj" role="listitem" href="1118/index.html" data-key="4" title="Alt+4 — 網頁製作練習_競賽資訊">
+                    <strong>網頁製作練習_競賽資訊</strong>
+                </a>
+                <a class="proj" role="listitem" href="indexold.html" data-key="5" title="Alt+5 — 網頁製作練習_樂團介紹">
+                    <strong>網頁製作練習_樂團介紹</strong>
+                </a>
+            </div>
         </section>
 
         <!-- 區塊四：學習資源列表 -->
@@ -278,31 +321,7 @@
         <!-- 區塊二後方的淺灰圓點背景 -->
         <div class="after-bg" aria-hidden="true"></div>
 
-        <!-- 作品集：快捷鍵 Alt+1..Alt+5 -->
-        <section id="portfolio" aria-labelledby="portfolio-title">
-            <h3 id="portfolio-title">作品集（快捷鍵：Alt+1 至 Alt+5）</h3>
-            <div class="proj-grid" role="list">
-                <a class="proj" role="listitem" href="0930/index.html" data-key="1" title="Alt+1 — 網頁製作練習_唐詩三百首">
-                    <strong>網頁製作練習_唐詩三百首</strong>
-                </a>
-                <a class="proj" role="listitem" href="1014/index.html" data-key="2" title="Alt+2 — 名片製作">
-                    <strong>名片製作</strong>
-                    
-                </a>
-                <a class="proj" role="listitem" href="1021/index.html" data-key="3" title="Alt+3 — 網頁製作練習_專輯宣傳">
-                    <strong>網頁製作練習_專輯宣傳</strong>
-                    
-                </a>
-                <a class="proj" role="listitem" href="1118/index.html" data-key="4" title="Alt+4 — 網頁製作練習_競賽資訊">
-                    <strong>網頁製作練習_競賽資訊</strong>
-                    
-                </a>
-                <a class="proj" role="listitem" href="indexold.html" data-key="5" title="Alt+5 — 網頁製作練習_樂團介紹">
-                    <strong>網頁製作練習_樂團介紹</strong>
-                    
-                </a>
-            </div>
-        </section>
+        
 
     </main>
 
